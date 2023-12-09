@@ -50,7 +50,7 @@ const Login = () => {
         e.preventDefault()
 
         try {
-            const { data } = axios.post(`${apiUrl}/users/login`,{
+            const { data } = await axios.post(`${apiUrl}/users/login`,{
                 email: email,
                 password: password
 

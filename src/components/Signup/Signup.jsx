@@ -53,7 +53,7 @@ const Signup = () => {
         e.preventDefault()
 
         try {
-            const { data } = axios.post(`${apiUrl}/users/login`,{
+            const { data } = await axios.post(`${apiUrl}/users`,{
                 email: email,
                 password: password,
                 full_name: fullname
