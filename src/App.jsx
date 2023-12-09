@@ -1,8 +1,13 @@
+import { Outlet } from 'react-router-dom'
 import './App.css'
+import Navbar from './components/Navigation/Navbar'
 
 function App() {
   return (
-    <div className="text-6xl text-amber-950 ">DriveWeave</div>
+    <>
+    <Navbar />
+    <Outlet />
+    </>
   )
 }
 
