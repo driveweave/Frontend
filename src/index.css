@@ -12,3 +12,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.active {
+  @apply bg-[#B6B6B6] rounded-2xl ;
+}
