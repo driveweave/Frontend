@@ -1,10 +1,27 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext, useState, useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import GoogleAndFacebook from '../common/GoogleAndFacebook'
 import { AiOutlineMail, AiOutlineLock, AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import axios from 'axios';
+import { AuthContext } from '../../hooks/context';
 
 const Login = () => {
     const [view, setView] = useState(false)
+
+    const { 
+        email, 
+        password, 
+        getEmailValue, 
+        getPasswordValue, 
+        setEmail, 
+        setPassword,
+        showError,
+        setShowError
+    } = useContext(AuthContext)
+
+    const apiUrl = import.meta.env.VITE_BASE_URL
+
+    const navigate = useNavigate()
 
     const viewPassword = () => {
         setView(prev => !prev)
@@ -17,17 +34,56 @@ const Login = () => {
         }
     }
 
+    useEffect(() => {
+        if (showError === true) {
+            setTimeout(() => {
+                setShowError(false);
+                console.log("timeout executed")
+            }, 2000);
+        }
+    
+        
+        return;
+    }, [showError]); 
+
+    const handleLoginSubmit = async (e) => {
+        e.preventDefault()
+
+        try {
+            const { data } = axios.post(`${apiUrl}/users/login`,{
+                email: email,
+                password: password
+
+            })
+            
+            if (data.success === true) {
+                console.log("login successful")
+
+                navigate(`/main/home`);
+                setEmail("");
+                setPassword("");
+            }
+        } catch (error) {
+            console.error("Error: Invalid credentials");
+            setShowError(true);
+        }
+    }
+
   return (
     <>
         <section className="text-center px-24 w-2/4 m-auto ">
             <h2 className="text-2xl font-bold text-[#4C4C4C] ">Welcome</h2>
 
-            <form className="my-16 flex flex-col gap-4" >
+            {showError && <h2 className="text-red-700 text-xl">Invalid credentials, try again!</h2>}
+
+            <form className="my-16 flex flex-col gap-4" onSubmit={handleLoginSubmit} >
                 <div className="flex p-2 items-center gap-2 border rounded-lg ">
                     <AiOutlineMail />
                     <input type="email"
                         placeholder="Email"
                         className="w-full outline-0"
+                        value={email}
+                        onChange={getEmailValue}
                     />
                 </div>
 
@@ -37,6 +93,8 @@ const Login = () => {
                         placeholder="Password"
                         className="w-full outline-0"
                         id="showPass"
+                        value={password}
+                        onChange={getPasswordValue}
                     />
                     {view ? <AiOutlineEyeInvisible onClick={viewPassword} /> : <AiOutlineEye onClick={viewPassword} />}
                 </div>
