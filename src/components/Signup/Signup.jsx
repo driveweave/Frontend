@@ -3,6 +3,7 @@ import GoogleAndFacebook from '../common/GoogleAndFacebook'
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 import { Link, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../hooks/context'
+import axios from 'axios'
 
 const Signup = () => {
     const [view, setView] = useState(false)
